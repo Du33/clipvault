@@ -135,6 +135,7 @@ function createWindow() {
     minHeight: 560,
     title: 'ClipVault',
     backgroundColor: '#bfe3ff',
+    icon: path.join(__dirname, '..', 'build', 'icon.png'),
     show: false,
     ...(isMac
       ? { titleBarStyle: 'hiddenInset', trafficLightPosition: { x: 16, y: 13 } }
@@ -274,6 +275,18 @@ function registerQuickSave() {
   });
   if (!ok) console.warn(`Could not register global shortcut ${QUICK_SAVE_SHORTCUT}`);
 }
+
+// Only one ClipVault at a time: a second launch just focuses the existing window.
+if (!app.requestSingleInstanceLock()) {
+  app.exit(0);
+}
+app.on('second-instance', () => {
+  if (!win) return createWindow();
+  if (win.isMinimized()) win.restore();
+  win.show();
+  win.focus();
+});
+if (process.platform === 'win32') app.setAppUserModelId('com.clipvault.app');
 
 app.whenReady().then(() => {
   // Serves saved images to the UI as clipvault-img://local/<ref>; private (encrypted)

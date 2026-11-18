@@ -54,11 +54,13 @@ npm start        # production build, run in Electron
 ## Packaging
 
 ```bash
-npm run dist:win   # Windows installer (NSIS) -> release/
+npm run dist:win   # -> release/ClipVault-Setup-<version>.exe (installer) and ClipVault-<version>-Portable.exe
 npm run dist:mac   # macOS .dmg -> release/  (must be built on a Mac)
 ```
 
-Add `build/icon.ico` (Windows) and `build/icon.icns` (macOS) to use a custom app icon.
+The app icon is `build/icon.svg`, rendered to `build/icon.png` (1024×1024); electron-builder generates the Windows `.ico` and macOS `.icns` from it.
+
+The builds are not code-signed, so Windows SmartScreen will show "Windows protected your PC" the first time — click **More info → Run anyway**.
 
 ## Project layout
 
